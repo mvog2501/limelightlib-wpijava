@@ -551,16 +551,16 @@ public class LimelightHelpers {
     private static RawFiducial[] getRawFiducials(String limelightName) {
         var entry = LimelightHelpers.getLimelightNTTableEntry(limelightName, "rawfiducials");
         var rawFiducialArray = entry.getDoubleArray(new double[0]);
-    
-        if (rawFiducialArray.length % 7 != 0) {
+        int valsPerEntry = 7;
+        if (rawFiducialArray.length % valsPerEntry != 0) {
             return new RawFiducial[0];
         }
     
-        int numFiducials = rawFiducialArray.length / 7;
+        int numFiducials = rawFiducialArray.length / valsPerEntry;
         RawFiducial[] rawFiducials = new RawFiducial[numFiducials];
     
         for (int i = 0; i < numFiducials; i++) {
-            int baseIndex = i * 7;
+            int baseIndex = i * valsPerEntry;
             int id = (int) extractArrayEntry(rawFiducialArray, baseIndex);
             double txnc = extractArrayEntry(rawFiducialArray, baseIndex + 1);
             double tync = extractArrayEntry(rawFiducialArray, baseIndex + 2);
@@ -578,16 +578,16 @@ public class LimelightHelpers {
     public static RawDetection[] getRawDetections(String limelightName) {
         var entry = LimelightHelpers.getLimelightNTTableEntry(limelightName, "rawdetections");
         var rawDetectionArray = entry.getDoubleArray(new double[0]);
-    
-        if (rawDetectionArray.length % 11 != 0) {
+        int valsPerEntry = 11;
+        if (rawDetectionArray.length % valsPerEntry != 0) {
             return new RawDetection[0];
         }
     
-        int numDetections = rawDetectionArray.length / 11;
+        int numDetections = rawDetectionArray.length / valsPerEntry;
         RawDetection[] rawDetections = new RawDetection[numDetections];
     
         for (int i = 0; i < numDetections; i++) {
-            int baseIndex = i * 11; // Starting index for this detection's data
+            int baseIndex = i * valsPerEntry; // Starting index for this detection's data
             int classId = (int) extractArrayEntry(rawDetectionArray, baseIndex);
             double txnc = extractArrayEntry(rawDetectionArray, baseIndex + 1);
             double tync = extractArrayEntry(rawDetectionArray, baseIndex + 2);
