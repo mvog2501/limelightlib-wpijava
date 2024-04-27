@@ -271,8 +271,10 @@ public class LimelightHelpers {
         }
     }
 
-    public static class Results {
-
+    public static class LimelightResults {
+        
+        public String error;
+        
         @JsonProperty("pID")
         public double pipelineID;
 
@@ -368,18 +370,6 @@ public class LimelightHelpers {
             targets_Detector = new LimelightTarget_Detector[0];
             targets_Barcode = new LimelightTarget_Barcode[0];
 
-        }
-    }
-
-    public static class LimelightResults {
-        @JsonProperty("Results")
-        public Results targetingResults;
-        
-        public String error;
-
-        public LimelightResults() {
-            targetingResults = new Results();
-            error = "";
         }
 
 

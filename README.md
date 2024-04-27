@@ -28,9 +28,9 @@ LimelightHelpers.LimelightResults llresults = LimelightHelpers.getLatestResults(
 Each LimelightResults instance contains a Results object. Each Results object contains data such as botpose, an array for each target type, etc. With getLatestResults(), you now have easy access to 100% of your Limelight's output.
 
 ```
-double[] botposeRed = llresults.results.botpose_wpired;
-double pipelineLatency = llresults.results.latency_pipeline;
-LimelightHelpers.LimelightTarget_Fiducial = llresults.results.targets_Fiducials;
+double[] botposeRed = llresults.botpose_wpired;
+double pipelineLatency = llresults.latency_pipeline;
+LimelightHelpers.LimelightTarget_Fiducial = llresults.targets_Fiducials;
 ```
 
 ### Taking snapshots
@@ -46,7 +46,6 @@ LimelightHelpers.LimelightTarget_Fiducial
 LimelightHelpers.LimelightTarget_Barcode
 LimelightHelpers.LimelightTarget_Classifier
 LimelightHelpers.LimelightTarget_Detector
-LimelightHelpers.Results
 LimelightHelpers.LimelightResults
 (Pure Static) LimelightHelpers
 ```
