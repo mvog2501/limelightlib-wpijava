@@ -5,6 +5,8 @@ package frc.robot;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import frc.robot.LimelightHelpers.LimelightResults;
+import frc.robot.LimelightHelpers.PoseEstimate;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -686,6 +688,26 @@ public class LimelightHelpers {
         return getLimelightNTDouble(limelightName, "ta");
     }
 
+    public static double getTargetCount(String limelightName) {
+        return getLimelightNTDouble(limelightName, "tcount");
+    }
+
+    public static double getClassifierClassIndex (String limelightName) {
+        return getLimelightNTDouble(limelightName, "tcclassindex");
+    }
+    public static double getDetectorClassIndex (String limelightName) {
+        return getLimelightNTDouble(limelightName, "tdclassindex");
+    }
+
+    
+    public static String getClassifierClass (String limelightName) {
+        return getLimelightNTDouble(limelightName, "tcclass");
+    }
+    public static String getDetectorClass (String limelightName) {
+        return getLimelightNTDouble(limelightName, "tdclass");
+    }
+
+
     public static double getLatency_Pipeline(String limelightName) {
         return getLimelightNTDouble(limelightName, "tl");
     }
@@ -696,6 +718,10 @@ public class LimelightHelpers {
 
     public static double getCurrentPipelineIndex(String limelightName) {
         return getLimelightNTDouble(limelightName, "getpipe");
+    }
+
+    public static String getCurrentPipelineType(String limelightName) {
+        return getLimelightNTDouble(limelightName, "getpipetype");
     }
 
     public static String getJSONDump(String limelightName) {
@@ -949,13 +975,6 @@ public class LimelightHelpers {
         setLimelightNTDouble(limelightName, "stream", 2);
     }
 
-    public static void setCameraMode_Processor(String limelightName) {
-        setLimelightNTDouble(limelightName, "camMode", 0);
-    }
-    public static void setCameraMode_Driver(String limelightName) {
-        setLimelightNTDouble(limelightName, "camMode", 1);
-    }
-
 
     /**
      * Sets the crop window. The crop window in the UI must be completely open for
@@ -982,6 +1001,15 @@ public class LimelightHelpers {
         entries[4] = roll;
         entries[5] = rollRate;
         setLimelightNTDoubleArray(limelightName, "robot_orientation_set", entries);
+    }
+    public static void SetFidcuial3DOffset(String limelightName, double x, double y, 
+        double z) {
+
+        double[] entries = new double[3];
+        entries[0] = x;
+        entries[1] = y;
+        entries[2] = z;
+        setLimelightNTDoubleArray(limelightName, "fiducial_offset_set", entries);
     }
 
     public static void SetFiducialIDFiltersOverride(String limelightName, int[] validIDs) {
