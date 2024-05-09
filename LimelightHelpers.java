@@ -1,4 +1,4 @@
-//LimelightHelpers v1.6 (April 9, 2024)
+//LimelightHelpers v1.7 (May 9, 2024) (REQUIRES 2024.6)
 
 package frc.robot;
 
@@ -361,7 +361,7 @@ public class LimelightHelpers {
         @JsonProperty("Barcode")
         public LimelightTarget_Barcode[] targets_Barcode;
 
-        public Results() {
+        public LimelightResults() {
             botpose = new double[6];
             botpose_wpired = new double[6];
             botpose_wpiblue = new double[6];
@@ -662,6 +662,11 @@ public class LimelightHelpers {
         return getLimelightNTTableEntry(tableName, entryName).getString("");
     }
 
+    public static String[] getLimelightNTStringArray(String tableName, String entryName) {
+        return getLimelightNTTableEntry(tableName, entryName).getStringArray(new String[0]);
+    }
+
+
     public static URL getLimelightURLString(String tableName, String request) {
         String urlString = "http://" + sanitizeName(tableName) + ".local:5807/" + request;
         URL url;
@@ -688,23 +693,42 @@ public class LimelightHelpers {
         return getLimelightNTDouble(limelightName, "ta");
     }
 
-    public static double getTargetCount(String limelightName) {
-        return getLimelightNTDouble(limelightName, "tcount");
+    public static double[] getT2DArray(String limelightName) {
+        return getLimelightNTDoubleArray(limelightName, "t2d");
+    }
+    
+
+    public static int getTargetCount(String limelightName) {
+      double[] t2d = getT2DArray(limelightName);
+      if(t2d.length == 17)
+      {
+        return (int)t2d[1];
+      }
+      return 0;
     }
 
-    public static double getClassifierClassIndex (String limelightName) {
-        return getLimelightNTDouble(limelightName, "tcclassindex");
+    public static int getClassifierClassIndex (String limelightName) {
+    double[] t2d = getT2DArray(limelightName);
+      if(t2d.length == 17)
+      {
+        return (int)t2d[10];
+      }
+      return 0;
     }
-    public static double getDetectorClassIndex (String limelightName) {
-        return getLimelightNTDouble(limelightName, "tdclassindex");
+    public static int getDetectorClassIndex (String limelightName) {
+     double[] t2d = getT2DArray(limelightName);
+      if(t2d.length == 17)
+      {
+        return (int)t2d[11];
+      }
+      return 0;
     }
-
     
     public static String getClassifierClass (String limelightName) {
-        return getLimelightNTDouble(limelightName, "tcclass");
+        return getLimelightNTString(limelightName, "tcclass");
     }
     public static String getDetectorClass (String limelightName) {
-        return getLimelightNTDouble(limelightName, "tdclass");
+        return getLimelightNTString(limelightName, "tdclass");
     }
 
 
@@ -721,7 +745,7 @@ public class LimelightHelpers {
     }
 
     public static String getCurrentPipelineType(String limelightName) {
-        return getLimelightNTDouble(limelightName, "getpipetype");
+        return getLimelightNTString(limelightName, "getpipetype");
     }
 
     public static String getJSONDump(String limelightName) {
@@ -799,6 +823,10 @@ public class LimelightHelpers {
 
     public static String getNeuralClassID(String limelightName) {
         return getLimelightNTString(limelightName, "tclass");
+    }
+
+    public static String[] getRawBarcodeData(String limelightName) {
+        return getLimelightNTStringArray(limelightName, "rawbarcodes");
     }
 
     /////
@@ -988,6 +1016,17 @@ public class LimelightHelpers {
         entries[3] = cropYMax;
         setLimelightNTDoubleArray(limelightName, "crop", entries);
     }
+   
+    /**
+     * Sets 3D offset point for easy 3D targeting.
+     */
+    public static void setFiducial3DOffset(String limelightName, double offsetX, double offsetY, double offsetZ) {
+        double[] entries = new double[3];
+        entries[0] = offsetX;
+        entries[1] = offsetY;
+        entries[2] = offsetZ;
+        setLimelightNTDoubleArray(limelightName, "fiducial_offset_set", entries);
+    }
 
     public static void SetRobotOrientation(String limelightName, double yaw, double yawRate, 
         double pitch, double pitchRate, 
@@ -1120,7 +1159,7 @@ public class LimelightHelpers {
 
         long end = System.nanoTime();
         double millis = (end - start) * .000001;
-        results.targetingResults.latency_jsonParse = millis;
+        results.latency_jsonParse = millis;
         if (profileJSON) {
             System.out.printf("lljson: %.2f\r\n", millis);
         }
