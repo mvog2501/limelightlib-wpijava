@@ -445,6 +445,20 @@ public class LimelightHelpers {
         public double avgTagArea;
         public RawFiducial[] rawFiducials; 
 
+        /**
+         * Makes a PoseEstimate object with default values
+         */
+        public PoseEstimate() {
+            this.pose = new Pose2d();
+            this.timestampSeconds = 0;
+            this.latency = 0;
+            this.tagCount = 0;
+            this.tagSpan = 0;
+            this.avgTagDist = 0;
+            this.avgTagArea = 0;
+            this.rawFiducials = new RawFiducial[]{};
+        }
+
         public PoseEstimate(Pose2d pose, double timestampSeconds, double latency, 
             int tagCount, double tagSpan, double avgTagDist, 
             double avgTagArea, RawFiducial[] rawFiducials) {
@@ -458,6 +472,7 @@ public class LimelightHelpers {
             this.avgTagArea = avgTagArea;
             this.rawFiducials = rawFiducials;
         }
+
     }
 
     private static ObjectMapper mapper;
