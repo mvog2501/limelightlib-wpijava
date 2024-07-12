@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -29,8 +30,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class LimelightHelpers {
+
+    private static final Map<String, DoubleArrayEntry> doubleArrayEntries = new ConcurrentHashMap<>();
+
 
     public static class LimelightTarget_Retro {
 
@@ -672,8 +677,11 @@ public class LimelightHelpers {
     }
 
     public static DoubleArrayEntry getLimelightDoubleArrayEntry(String tableName, String entryName) {
-        NetworkTable table = getLimelightNTTable(tableName);
-        return table.getDoubleArrayTopic(entryName).getEntry(new double[0]);
+        String key = tableName + "/" + entryName;
+        return doubleArrayEntries.computeIfAbsent(key, k -> {
+            NetworkTable table = getLimelightNTTable(tableName);
+            return table.getDoubleArrayTopic(entryName).getEntry(new double[0]);
+        });
     }
     
     public static double getLimelightNTDouble(String tableName, String entryName) {
