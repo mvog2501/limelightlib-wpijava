@@ -1,4 +1,4 @@
-//LimelightHelpers v1.8 (July 7, 2024) (REQUIRES 2024.9.1)
+//LimelightHelpers v1.9 (REQUIRES 2024.9.1)
 
 package frc.robot;
 
