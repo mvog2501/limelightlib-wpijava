@@ -1137,7 +1137,7 @@ public class LimelightHelpers {
     }
 
 
-    public static void SetFidcuial3DOffset(String limelightName, double x, double y, 
+    public static void SetFiducial3DOffset(String limelightName, double x, double y, 
         double z) {
 
         double[] entries = new double[3];
